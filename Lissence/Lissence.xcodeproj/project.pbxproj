@@ -50,6 +50,14 @@
 			);
 			target = 49130A702F44376B00B10708 /* Lissence */;
 		};
+		C3B57C672F5EE77F002C9D36 /* Exceptions for "Watch Watch App" folder in "Lissence" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WatchDetectionView.swift,
+				WatchMusicView.swift,
+			);
+			target = 49130A702F44376B00B10708 /* Lissence */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,6 +71,9 @@
 		};
 		C3B57C532F5EDD10002C9D36 /* Watch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C3B57C672F5EE77F002C9D36 /* Exceptions for "Watch Watch App" folder in "Lissence" target */,
+			);
 			path = "Watch Watch App";
 			sourceTree = "<group>";
 		};
