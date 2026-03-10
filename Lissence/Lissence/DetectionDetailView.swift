@@ -83,29 +83,66 @@ extension DetectionDetailView {
     
     // Content: 소리 분석 상태 표시
     private var contentView: some View {
-        VStack(spacing: 25) {
-            // 감지된 소리가 없을 때 (기본 화면)
-            if soundDetector.lastDetectedSound.isEmpty {
+        VStack(spacing: 20) {
+            // ★ 워치에서 감지되어 전송된 소리 (Watch → iPhone)
+            if let watchMessage = connectivity.receivedMessage {
+                VStack(spacing: 8) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "applewatch")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text("워치에서 감지됨")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Image(systemName: watchMessage.iconName)
+                        .font(.system(size: 70))
+                        .foregroundColor(watchMessage.isDanger ? .red : .green)
+
+                    Text(watchMessage.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(watchMessage.isDanger ? .red : .green)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+                .padding(.bottom, soundDetector.lastDetectedSound.isEmpty ? 0 : 8)
+            }
+
+            // ★ 아이폰에서 직접 감지된 소리 (iPhone 마이크)
+            if soundDetector.lastDetectedSound.isEmpty && connectivity.receivedMessage == nil {
+                // 아무것도 감지되지 않은 기본 화면
                 Image(systemName: "waveform")
                     .font(.system(size: 90))
                     .foregroundColor(.blue)
-                
+
                 Text("소리 분석 중..")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.secondary)
-            } else {
-                // 위험 소리가 감지되었을 때
-                Image(systemName: getIconForSound(soundDetector.lastDetectedSound))
-                    .font(.system(size: 90))
-                    .foregroundColor(.red)
-                
-                Text(soundDetector.lastDetectedSound)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+            } else if !soundDetector.lastDetectedSound.isEmpty {
+                VStack(spacing: 8) {
+                    if connectivity.receivedMessage != nil {
+                        HStack(spacing: 4) {
+                            Image(systemName: "iphone")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text("아이폰에서 감지됨")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    Image(systemName: getIconForSound(soundDetector.lastDetectedSound))
+                        .font(.system(size: connectivity.receivedMessage != nil ? 60 : 90))
+                        .foregroundColor(.red)
+
+                    Text(soundDetector.lastDetectedSound)
+                        .font(connectivity.receivedMessage != nil ? .title2 : .title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
             }
         }
     }
