@@ -16,15 +16,6 @@ class SoundDetector: NSObject, SNResultsObserving, ObservableObject {
     @Published var lastDetectedSound: String = ""
     @Published var isDetecting: Bool = false
 
-//    func startDetection() {
-//        // 1. 오디오 세션 설정
-//        let audioSession = AVAudioSession.sharedInstance()
-//        do {
-//            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
-//            try audioSession.setActive(true)
-//        } catch {
-//            print("오디오 세션 설정 실패")
-//        }
     func startDetection() {
         let audioSession = AVAudioSession.sharedInstance()
         do {

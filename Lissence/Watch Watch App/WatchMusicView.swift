@@ -13,6 +13,6 @@ struct WatchMusicView: View {
                 .frame(width: 50, height: 50)
                 .foregroundColor(.purple)
         }
-        //.navigationTitle("음악 모드")
+        .navigationTitle("음악 모드")
     }
 }
