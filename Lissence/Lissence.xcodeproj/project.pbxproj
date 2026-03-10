@@ -6,27 +6,29 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4DE1347B2F5DC4C900C43D01 /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE1347A2F5DC4C900C43D01 /* WatchKit.framework */; };
+		4DE1347D2F5DC4D900C43D01 /* SoundAnalysis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE1347C2F5DC4D900C43D01 /* SoundAnalysis.framework */; };
+		4DF0EABB2F5E820E0096B22B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF0EABA2F5E820E0096B22B /* AVFoundation.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		49130A712F44376B00B10708 /* Lissence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lissence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DA402BB2F5DB85200019376 /* LissenceWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LissenceWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE1347A2F5DC4C900C43D01 /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
+		4DE1347C2F5DC4D900C43D01 /* SoundAnalysis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SoundAnalysis.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/SoundAnalysis.framework; sourceTree = DEVELOPER_DIR; };
+		4DF0EABA2F5E820E0096B22B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4976EA292F481DA3000BFA31 /* Exceptions for "Lissence" folder in "Lissence" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 49130A702F44376B00B10708 /* Lissence */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		49130A732F44376B00B10708 /* Lissence */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				4976EA292F481DA3000BFA31 /* Exceptions for "Lissence" folder in "Lissence" target */,
-			);
 			path = Lissence;
+			sourceTree = "<group>";
+		};
+		4DA402BF2F5DB85200019376 /* LissenceWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "LissenceWatch Watch App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -39,6 +41,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4DA402B82F5DB85200019376 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DF0EABB2F5E820E0096B22B /* AVFoundation.framework in Frameworks */,
+				4DE1347B2F5DC4C900C43D01 /* WatchKit.framework in Frameworks */,
+				4DE1347D2F5DC4D900C43D01 /* SoundAnalysis.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +58,8 @@
 			isa = PBXGroup;
 			children = (
 				49130A732F44376B00B10708 /* Lissence */,
+				4DA402BF2F5DB85200019376 /* LissenceWatch Watch App */,
+				4DE134772F5DC4BB00C43D01 /* Frameworks */,
 				49130A722F44376B00B10708 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +68,19 @@
 			isa = PBXGroup;
 			children = (
 				49130A712F44376B00B10708 /* Lissence.app */,
+				4DA402BB2F5DB85200019376 /* LissenceWatch Watch App.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4DE134772F5DC4BB00C43D01 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4DF0EABA2F5E820E0096B22B /* AVFoundation.framework */,
+				4DE1347C2F5DC4D900C43D01 /* SoundAnalysis.framework */,
+				4DE1347A2F5DC4C900C43D01 /* WatchKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +108,28 @@
 			productReference = 49130A712F44376B00B10708 /* Lissence.app */;
 			productType = "com.apple.product-type.application";
 		};
+		4DA402BA2F5DB85200019376 /* LissenceWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DA402CB2F5DB85300019376 /* Build configuration list for PBXNativeTarget "LissenceWatch Watch App" */;
+			buildPhases = (
+				4DA402B72F5DB85200019376 /* Sources */,
+				4DA402B82F5DB85200019376 /* Frameworks */,
+				4DA402B92F5DB85200019376 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4DA402BF2F5DB85200019376 /* LissenceWatch Watch App */,
+			);
+			name = "LissenceWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "LissenceWatch Watch App";
+			productReference = 4DA402BB2F5DB85200019376 /* LissenceWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -94,6 +141,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					49130A702F44376B00B10708 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					4DA402BA2F5DB85200019376 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -113,6 +163,7 @@
 			projectRoot = "";
 			targets = (
 				49130A702F44376B00B10708 /* Lissence */,
+				4DA402BA2F5DB85200019376 /* LissenceWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -125,10 +176,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4DA402B92F5DB85200019376 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		49130A6D2F44376B00B10708 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DA402B72F5DB85200019376 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,7 +330,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6U6THJ8TA2;
+				DEVELOPMENT_TEAM = 9T86M52746;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lissence/Info.plist;
@@ -280,7 +345,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.koreatech.Lissence.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kjy.Lissence;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -301,7 +366,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6U6THJ8TA2;
+				DEVELOPMENT_TEAM = 9T86M52746;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lissence/Info.plist;
@@ -316,7 +381,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.koreatech.Lissence.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kjy.Lissence;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -326,6 +391,76 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4DA402C92F5DB85300019376 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9T86M52746;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LissenceWatch-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LissenceWatch;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소리 감지를 위해 마이크 접근이 필요합니다";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kjy.Lissence.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		4DA402CA2F5DB85300019376 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9T86M52746;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LissenceWatch-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LissenceWatch;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소리 감지를 위해 마이크 접근이 필요합니다";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kjy.Lissence.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Release;
 		};
@@ -346,6 +481,15 @@
 			buildConfigurations = (
 				49130A7D2F44376D00B10708 /* Debug */,
 				49130A7E2F44376D00B10708 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DA402CB2F5DB85300019376 /* Build configuration list for PBXNativeTarget "LissenceWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DA402C92F5DB85300019376 /* Debug */,
+				4DA402CA2F5DB85300019376 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
