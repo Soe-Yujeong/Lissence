@@ -1,3 +1,8 @@
+/// 감지모드입니다.
+/// - 기능
+///     - 위험 소리 분류 및 출력
+///     - 사람의 말소리 실시간 출력
+
 import SwiftUI
 
 struct DetectionDetailView: View {
@@ -113,12 +118,6 @@ extension DetectionDetailView {
     // Bottom Controls: 모드 전환 버튼 및 워치 전송 테스트
     private var bottomControls: some View {
         VStack(spacing: 15) {
-            // 워치 전송 테스트 버튼
-            Button("워치로 위험 신호 보내기") {
-                let msg = MessageData(title: "위험 감지됨!", iconName: "exclamationmark.triangle", isDanger: true)
-                connectivity.send(message: msg)
-            }
-            .padding(.bottom, 10)
             
             // 음악 모드 전환 버튼
             Button(action: { currentPath = "music" }) {
