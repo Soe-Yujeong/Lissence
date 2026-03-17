@@ -10,6 +10,8 @@
 		4DE1347B2F5DC4C900C43D01 /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE1347A2F5DC4C900C43D01 /* WatchKit.framework */; };
 		4DE1347D2F5DC4D900C43D01 /* SoundAnalysis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE1347C2F5DC4D900C43D01 /* SoundAnalysis.framework */; };
 		4DF0EABB2F5E820E0096B22B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF0EABA2F5E820E0096B22B /* AVFoundation.framework */; };
+		C32770F42F69876900EEA891 /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32770F32F69876900EEA891 /* ConnectivityManager.swift */; };
+		C32770F52F69876900EEA891 /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32770F32F69876900EEA891 /* ConnectivityManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,7 @@
 		4DE1347A2F5DC4C900C43D01 /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
 		4DE1347C2F5DC4D900C43D01 /* SoundAnalysis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SoundAnalysis.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/SoundAnalysis.framework; sourceTree = DEVELOPER_DIR; };
 		4DF0EABA2F5E820E0096B22B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		C32770F32F69876900EEA891 /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -57,6 +60,7 @@
 		49130A682F44376B00B10708 = {
 			isa = PBXGroup;
 			children = (
+				C32770F32F69876900EEA891 /* ConnectivityManager.swift */,
 				49130A732F44376B00B10708 /* Lissence */,
 				4DA402BF2F5DB85200019376 /* LissenceWatch Watch App */,
 				4DE134772F5DC4BB00C43D01 /* Frameworks */,
@@ -190,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C32770F42F69876900EEA891 /* ConnectivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C32770F52F69876900EEA891 /* ConnectivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
