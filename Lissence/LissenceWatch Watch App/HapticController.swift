@@ -1,3 +1,5 @@
+/// 상황별 진동 제어기
+
 import WatchKit
 import Foundation
 
