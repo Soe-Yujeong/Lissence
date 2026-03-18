@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct WatchContentView: View {
 
     @StateObject private var classifier = SoundClassifier()
 
