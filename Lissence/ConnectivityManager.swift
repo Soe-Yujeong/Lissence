@@ -65,6 +65,7 @@ extension ConnectivityManager: WCSessionDelegate {
             if let data = try? JSONSerialization.data(withJSONObject: message, options: []),
                let decoded = try? JSONDecoder().decode(MessageData.self, from: data) {
                 self.receivedMessage = decoded // 여기서 @Published 값이 바뀌며 화면이 바뀝니다.
+                print("📩 아이폰으로부터 메시지 수신: \(decoded.title)")
             }
         }
     }
