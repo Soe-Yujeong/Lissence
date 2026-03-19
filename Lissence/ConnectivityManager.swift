@@ -25,6 +25,9 @@ final class ConnectivityManager: NSObject, ObservableObject {
     /// 워치로부터 전달받은 최신 메시지 (뷰에서 관찰 대상)
     @Published var receivedMessage: MessageData?
     
+    /// 위험 감지상태의 자동 초기화를 위한 타이머 변수 추가
+    private var resetTimer: Timer?
+    
     // MARK: - Initialization
     override private init() {
         super.init()
@@ -64,8 +67,21 @@ extension ConnectivityManager: WCSessionDelegate {
             // 수신 데이터 디코딩 및 UI 업데이트
             if let data = try? JSONSerialization.data(withJSONObject: message, options: []),
                let decoded = try? JSONDecoder().decode(MessageData.self, from: data) {
-                self.receivedMessage = decoded // 여기서 @Published 값이 바뀌며 화면이 바뀝니다.
-                print("📩 아이폰으로부터 메시지 수신: \(decoded.title)")
+                
+                // 1. 기존 타이머가 있다면 취소 (새로운 메시지가 오면 제한시간 리셋)
+                self.resetTimer?.invalidate()
+                
+                // 2. 메시지 수신 및 UI 업데이트
+                self.receivedMessage = decoded // 화면이 바뀝니다.
+                print("📩 아이폰으로부터 메시지 수신: \(decoded.title)") // 디버깅용
+                
+                // 3. 5초 후에 receivedMessage를 nil로 만들어 화면을 대기 상태로 되돌림
+                self.resetTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
+                    DispatchQueue.main.async {
+                        self?.receivedMessage = nil
+                        print("♻️ 아이폰 메시지 표시 기한 만료 - 대기 상태 전환")
+                    }
+                }
             }
         }
     }
@@ -77,4 +93,3 @@ extension ConnectivityManager: WCSessionDelegate {
     }
     #endif
 }
-
