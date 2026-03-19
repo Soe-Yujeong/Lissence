@@ -24,6 +24,8 @@ final class ConnectivityManager: NSObject, ObservableObject {
     // MARK: - Published Properties
     /// 워치로부터 전달받은 최신 메시지 (뷰에서 관찰 대상)
     @Published var receivedMessage: MessageData?
+    /// 호출 감지 트리거 카운터 (같은 키워드 반복 감지 대응)
+    @Published var callingTrigger: Int = 0
     
     // MARK: - Initialization
     override private init() {
@@ -36,20 +38,31 @@ final class ConnectivityManager: NSObject, ObservableObject {
     }
     
     // MARK: - Sending Logic
-    /// 상대 기기로 데이터를 전송합니다.
+    /// 상대 기기로 MessageData를 전송합니다.
     func send(message: MessageData) {
-        // 상대방 기기(워치)가 연결되어 있는지 먼저 확인
         guard WCSession.default.isReachable else {
             print("연결 실패")
             return
         }
-        
-        // 구조체 데이터를 딕셔너리[String: Any] 형태로 변환해서 보냅니다. (전송 규격)
         if let data = try? JSONEncoder().encode(message),
            let dictionary = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             WCSession.default.sendMessage(dictionary, replyHandler: nil)
         }
     }
+
+    /// 워치 → 아이폰: 오디오 버퍼 Data 전송
+    func sendAudioData(_ data: Data) {
+        guard WCSession.default.isReachable else {
+            print("연결 실패 - 오디오 데이터 전송 불가")
+            return
+        }
+        WCSession.default.sendMessageData(data, replyHandler: nil) { error in
+            print("오디오 데이터 전송 실패: \(error)")
+        }
+    }
+
+    /// 아이폰에서 워치 오디오 수신 시 호출되는 콜백
+    var onAudioDataReceived: ((Data) -> Void)?
 }
 
 // MARK: - WCSessionDelegate
@@ -57,15 +70,24 @@ final class ConnectivityManager: NSObject, ObservableObject {
 extension ConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
 
-    // ★ 실제로 상대방이 sendMessage를 했을 때 실행되는 콜백 함수
+    // ★ MessageData 수신 (기존)
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        // UI 업데이트는 반드시 메인 스레드에서! (UIKit의 DispatchQueue.main.async와 동일)
         DispatchQueue.main.async {
-            // 수신 데이터 디코딩 및 UI 업데이트
             if let data = try? JSONSerialization.data(withJSONObject: message, options: []),
                let decoded = try? JSONDecoder().decode(MessageData.self, from: data) {
-                self.receivedMessage = decoded // 여기서 @Published 값이 바뀌며 화면이 바뀝니다.
+                self.receivedMessage = decoded
+                // 호출 감지 메시지면 카운터 증가 (같은 키워드 반복 감지 대응)
+                if !decoded.isDanger {
+                    self.callingTrigger += 1
+                }
             }
+        }
+    }
+
+    // ★ 워치에서 보낸 오디오 Data 수신 (신규)
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        DispatchQueue.main.async {
+            self.onAudioDataReceived?(messageData)
         }
     }
     

@@ -1,13 +1,19 @@
 import SwiftUI
+import AVFoundation
 
 struct DetectionDetailView: View {
     @Binding var currentPath: String
     @State private var isVoiceOn = false
-    
-    // 매니저 연결 (이전에 테스트했던 클래스들을 가져옵니다)
+
+    // 호출 감지 팝업
+    @State private var showCallAlert = false
+    @State private var detectedKeyword = ""
+
+    // 매니저 연결
     @StateObject var connectivity = ConnectivityManager.shared
     @StateObject var soundDetector = SoundDetector()
     @StateObject var speechManager = SpeechManager()
+    @StateObject var keywordManager = KeywordManager()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,9 +30,57 @@ struct DetectionDetailView: View {
             // MARK: - 3. 하단 컨트롤 영역 (버튼 및 인터랙션)
             bottomControls
         }
-        // 화면이 나타날 때 소리 감지 시작, 사라질 때 중지
+        // 호출 감지 팝업
+        .alert("누군가 부르는 것 같아요", isPresented: $showCallAlert) {
+            Button("음성인식 켜기") { isVoiceOn = true }
+            Button("무시", role: .cancel) { }
+        } message: {
+            Text("'\(detectedKeyword)' 소리가 감지됐어요. 음성인식으로 전환할까요?")
+        }
+        // 화면이 나타날 때 소리 감지 시작 + 콜백 연결
         .onAppear {
             soundDetector.startDetection()
+
+            // 아이폰 speech 감지 → 롤링 버퍼 → 키워드 분석
+            soundDetector.onSpeechDetected = { [weak speechManager] buffer in
+                guard let speechManager else { return }
+                speechManager.analyzeBuffer(buffer, keywords: keywordManager.keywords) { matched in
+                    detectedKeyword = matched
+                    showCallAlert = true
+                    // 워치에도 결과 전송
+                    let msg = MessageData(
+                        title: "'\(matched)' 감지됨",
+                        iconName: "person.wave.2.fill",
+                        isDanger: false
+                    )
+                    connectivity.send(message: msg)
+                }
+            }
+
+            // 워치 오디오 수신 → 키워드 분석 → 워치로 결과 전송
+            connectivity.onAudioDataReceived = { [weak speechManager] data in
+                print("📥 [1] 워치 오디오 수신: \(data.count / 1024)KB")
+                guard let speechManager else { print("❌ speechManager nil"); return }
+                if let buffer = Self.dataToBuffer(data) {
+                    print("✅ [2] 버퍼 변환 성공: \(buffer.frameLength) frames")
+                    print("🔑 [3] 키워드 목록: \(keywordManager.keywords)")
+                    speechManager.analyzeBuffer(buffer, keywords: keywordManager.keywords) { matched in
+                        print("✅ [4] 키워드 매칭: \(matched)")
+                        detectedKeyword = matched
+                        showCallAlert = true
+                        // 워치에도 결과 전송
+                        let msg = MessageData(
+                            title: "'\(matched)' 감지됨",
+                            iconName: "person.wave.2.fill",
+                            isDanger: false
+                        )
+                        connectivity.send(message: msg)
+                        print("📤 [5] 워치로 메시지 전송")
+                    }
+                } else {
+                    print("❌ [2] 버퍼 변환 실패")
+                }
+            }
         }
         .onDisappear {
             soundDetector.stopDetection()
@@ -37,11 +91,13 @@ struct DetectionDetailView: View {
             }
         }
         // 토글 버튼이 눌릴 때마다 음성 인식 켜고 끄기
-        .onChange(of: isVoiceOn) { newValue in
+        .onChange(of: isVoiceOn) { _, newValue in
             if newValue {
+                soundDetector.stopDetection()  // 마이크 충돌 방지
                 speechManager.startRecording()
             } else {
                 speechManager.stopRecording()
+                soundDetector.startDetection() // 감지 모드 재시작
             }
         }
         // 자막창 (Sheet)
@@ -172,6 +228,30 @@ extension DetectionDetailView {
         }
     }
     
+    // 워치에서 받은 Data → AVAudioPCMBuffer 변환 (16kHz 모노 float32)
+    static func dataToBuffer(_ data: Data) -> AVAudioPCMBuffer? {
+        guard let format = AVAudioFormat(
+            commonFormat: .pcmFormatFloat32,
+            sampleRate: 16000,
+            channels: 1,
+            interleaved: false
+        ) else { return nil }
+
+        // 워치에서 Int16으로 압축해서 보내므로 Float32로 변환
+        let frameCount = AVAudioFrameCount(data.count / MemoryLayout<Int16>.size)
+        guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else { return nil }
+        buffer.frameLength = frameCount
+
+        data.withUnsafeBytes { ptr in
+            guard let src = ptr.baseAddress?.assumingMemoryBound(to: Int16.self),
+                  let dst = buffer.floatChannelData else { return }
+            for i in 0..<Int(frameCount) {
+                dst[0][i] = Float(src[i]) / 32767.0
+            }
+        }
+        return buffer
+    }
+
     // 감지된 텍스트에 따라 알맞은 아이콘을 반환하는 헬퍼 함수
     private func getIconForSound(_ sound: String) -> String {
         if sound.contains("경적") {

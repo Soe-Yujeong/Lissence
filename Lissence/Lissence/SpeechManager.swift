@@ -8,14 +8,25 @@ import Combine
 
 // NSObject를 상속받아야 음성 인식 델리게이트를 사용할 수 있습니다.
 class SpeechManager: NSObject, ObservableObject {
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) // 한국어 설정
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
-    private let audioEngine = AVAudioEngine() // 마이크 입력용 엔진
+    private let audioEngine = AVAudioEngine()
 
-    // 화면(SwiftUI)에서 이 글자를 관찰해서 업데이트합니다.
     @Published var transcript: String = ""
     @Published var isRecording: Bool = false
+
+    // 권한 캐싱 (매번 요청 방지)
+    private var isAuthorized = false
+    // 중복 분석 방지
+    private var isAnalyzing = false
+
+    override init() {
+        super.init()
+        SFSpeechRecognizer.requestAuthorization { [weak self] status in
+            self?.isAuthorized = (status == .authorized)
+        }
+    }
 
     func startRecording() {
         // 기존 작업이 있다면 취소
@@ -78,6 +89,36 @@ class SpeechManager: NSObject, ObservableObject {
         audioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
         isRecording = false
+    }
+
+    // MARK: - 버퍼 기반 키워드 분석 (오디오 엔진 없이 처리)
+    func analyzeBuffer(_ buffer: AVAudioPCMBuffer, keywords: [String], onMatch: @escaping (String) -> Void) {
+        guard !isAnalyzing else { print("⏭️ analyzeBuffer 스킵 (이미 분석 중)"); return }
+        guard isAuthorized else { print("❌ 음성인식 권한 없음"); return }
+        guard let recognizer = speechRecognizer, recognizer.isAvailable else { print("❌ recognizer 없음 또는 불가"); return }
+        print("🔍 analyzeBuffer 시작")
+
+        isAnalyzing = true
+
+        let request = SFSpeechAudioBufferRecognitionRequest()
+        request.shouldReportPartialResults = false
+        request.append(buffer)
+        request.endAudio()
+
+        recognizer.recognitionTask(with: request) { [weak self] result, error in
+            defer { DispatchQueue.main.async { self?.isAnalyzing = false } }
+            if let error { print("버퍼 인식 오류: \(error)"); return }
+            guard let result = result, result.isFinal else { return }
+            let text = result.bestTranscription.formattedString
+            print("버퍼 인식 결과: \(text)")
+
+            for keyword in keywords {
+                if text.contains(keyword) {
+                    DispatchQueue.main.async { onMatch(keyword) }
+                    return
+                }
+            }
+        }
     }
 }
 

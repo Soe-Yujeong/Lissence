@@ -7,5 +7,9 @@
 		<string>audio</string>
 		<string>processing</string>
 	</array>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>호출 소리를 감지하기 위해 음성인식을 사용합니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>주변 소리를 감지하기 위해 마이크를 사용합니다.</string>
 </dict>
 </plist>
